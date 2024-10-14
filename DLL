@@ -1,0 +1,135 @@
+# Node class to represent each element of the double linked list
+class Node:
+    def __init__(self, data=None):
+        self.data = data  # Data stored in the node
+        self.prev = None  # Pointer to the previous node
+        self.next = None  # Pointer to the next node
+
+# Double Linked List class
+class DoubleLinkedList:
+    def __init__(self):
+        self.head = None  # Head (or first) node of the list
+
+    # Method to check if the list is empty
+    def is_empty(self):
+        return self.head is None
+
+    # Method to add a node at the beginning of the list
+    def add_at_start(self, data):
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+        else:
+            new_node.next = self.head
+            self.head.prev = new_node
+            self.head = new_node
+
+    # Method to add a node at the end of the list
+    def add_at_end(self, data):
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+        else:
+            temp = self.head
+            while temp.next:  # Traverse to the end of the list
+                temp = temp.next
+            temp.next = new_node
+            new_node.prev = temp
+
+    # Method to display the list from head to tail
+    def display_forward(self):
+        if self.is_empty():
+            print("The list is empty.")
+        else:
+            temp = self.head
+            while temp:
+                print(temp.data, end=" <-> ")
+                temp = temp.next
+            print("None")
+
+    # Method to display the list from tail to head
+    def display_backward(self):
+        if self.is_empty():
+            print("The list is empty.")
+        else:
+            temp = self.head
+            while temp.next:  # Traverse to the end of the list
+                temp = temp.next
+            while temp:  # Traverse backward using prev pointers
+                print(temp.data, end=" <-> ")
+                temp = temp.prev
+            print("None")
+
+    # Method to delete the first node
+    def delete_at_start(self):
+        if self.is_empty():
+            print("The list is empty, nothing to delete.")
+        else:
+            if self.head.next is None:
+                self.head = None  # Only one node in the list
+            else:
+                self.head = self.head.next
+                self.head.prev = None
+
+    # Method to delete the last node
+    def delete_at_end(self):
+        if self.is_empty():
+            print("The list is empty, nothing to delete.")
+        elif self.head.next is None:
+            self.head = None  # Only one node in the list
+        else:
+            temp = self.head
+            while temp.next:  # Traverse to the end of the list
+                temp = temp.next
+            temp.prev.next = None  # Remove the last node
+
+    # Method to search for a value in the list
+    def search(self, key):
+        temp = self.head
+        while temp:
+            if temp.data == key:
+                return True
+            temp = temp.next
+        return False
+
+    # Method to get the length of the list
+    def length(self):
+        count = 0
+        temp = self.head
+        while temp:
+            count += 1
+            temp = temp.next
+        return count
+
+# Example of how to use the double linked list
+if __name__ == "__main__":
+    dll = DoubleLinkedList()
+
+    # Adding elements
+    dll.add_at_start(3)
+    dll.add_at_start(2)
+    dll.add_at_end(4)
+    dll.add_at_end(5)
+
+    # Display the list forward
+    print("Display forward:")
+    dll.display_forward()  # Output: 2 <-> 3 <-> 4 <-> 5 <-> None
+
+    # Display the list backward
+    print("Display backward:")
+    dll.display_backward()  # Output: 5 <-> 4 <-> 3 <-> 2 <-> None
+
+    # Delete the first and last nodes
+    dll.delete_at_start()
+    dll.delete_at_end()
+
+    # Display the list again
+    print("After deletion:")
+    dll.display_forward()  # Output: 3 <-> 4 <-> None
+
+    # Search for an element
+    print(dll.search(3))  # Output: True
+    print(dll.search(6))  # Output: False
+
+    # Get the length of the list
+    print("Length of list:", dll.length())  # Output: Length of list: 2
